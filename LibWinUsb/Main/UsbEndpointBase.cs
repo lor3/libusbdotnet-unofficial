@@ -151,9 +151,26 @@ namespace LibUsbDotNet.Main
         #region IDisposable Members
 
         /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (mIsDisposed || !disposing)
+                return;
+
+            mIsDisposed = true;
+            DisposeAndRemoveFromList();
+        }
+
+        /// <summary>
         /// Frees resources associated with the endpoint.  Once disposed this <see cref="UsbEndpointBase"/> cannot be used.
         /// </summary>
-        public virtual void Dispose() { DisposeAndRemoveFromList(); }
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         #endregion
 

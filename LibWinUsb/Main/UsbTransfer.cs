@@ -32,6 +32,8 @@ namespace LibUsbDotNet.Main
     {
         private readonly UsbEndpointBase mEndpointBase;
 
+        private bool mIsDisposed;
+
         private IntPtr mBuffer;
         private int mCurrentOffset;
         private int mCurrentRemaining;
@@ -100,6 +102,14 @@ namespace LibUsbDotNet.Main
         }
 
         /// <summary>
+        /// Gets a value indicating if the object is disposed.
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return mIsDisposed; }
+        }
+
+        /// <summary>
         /// Gets the <see cref="WaitHandle"/> for the cancel event.
         /// </summary>
         public WaitHandle CancelWaitHandle
@@ -124,19 +134,42 @@ namespace LibUsbDotNet.Main
         /// <summary>
         /// Cancels any pending transfer and frees resources.
         /// </summary>
-        public virtual void Dispose()
+        public void Dispose()
         {
-            if (!IsCancelled) Cancel();
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
-            int dummy;
-            if (!mHasWaitBeenCalled) Wait(out dummy);
-            if (mPinnedHandle != null) mPinnedHandle.Dispose();
-            mPinnedHandle = null;
+        /// <summary>
+        /// Releases all resources used by the current object.
+        /// </summary>
+        /// <param name="isDisposing">
+        /// true to release both managed and unmanaged resources; false to release only
+        /// unmanaged resources.
+        /// </param>
+        protected virtual void Dispose(bool isDisposing)
+        {
+            if (!mIsDisposed)
+            {
+                // Set the disposed flag
+                this.mIsDisposed = true;
+
+                if (!IsCancelled) Cancel();
+
+                if (isDisposing)
+                {
+                    int dummy;
+                    if (!mHasWaitBeenCalled) Wait(out dummy);
+                }
+
+                if (mPinnedHandle != null) mPinnedHandle.Dispose();
+                mPinnedHandle = null;
+            }
         }
 
         #endregion
 
-        ~UsbTransfer() { Dispose(); }
+        ~UsbTransfer() { Dispose(false); }
 
         /// <summary>
         /// Cancels a pending transfer that was previously submitted with <see cref="Submit"/>.
