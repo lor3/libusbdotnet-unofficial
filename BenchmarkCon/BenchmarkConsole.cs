@@ -1181,7 +1181,7 @@ RefetchAltInterface:
             userInput--;
             if (userInput >= 0 && userInput < allRegDevices.Count)
             {
-                testParam.Device = allRegDevices[userInput].Device;
+                allRegDevices[userInput].Open(out testParam.Device);
 
                 if (!ReferenceEquals(testParam.Device, null))
                 {

@@ -78,6 +78,11 @@ namespace LibUsbDotNet.Main
         }
 
         /// <summary>
+        /// Returns the DriverMode this USB device is using.
+        /// </summary>
+        public abstract UsbDevice.DriverModeType DeviceDriverMode { get; }
+
+        /// <summary>
         /// Check this value to determine if the usb device is still connected to the bus and ready to open.
         /// </summary>
         /// <remarks>
@@ -282,15 +287,6 @@ namespace LibUsbDotNet.Main
                 return 0;
             }
         }
-
-        /// <summary>
-        /// Opens the USB device for communucation.
-        /// </summary>
-        /// <returns>Return a new instance of the <see cref="UsbDevice"/> class.
-        /// If the device fails to open a null refrence is return. For extended error
-        /// information see the <see cref="UsbDevice.UsbErrorEvent"/>.
-        ///  </returns>
-        public abstract UsbDevice Device { get; }
 
         /// <summary>
         /// Opens the USB device for communucation.

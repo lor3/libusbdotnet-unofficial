@@ -173,10 +173,7 @@ namespace LibUsbDotNet
             UsbRegistry regDeviceFound = allDevices.Find(findDevicePredicate);
 
             if (ReferenceEquals(regDeviceFound, null)) return null;
-
-            usbDeviceFound = regDeviceFound.Device;
-
-            return usbDeviceFound;
+            return regDeviceFound.Open(out usbDeviceFound) ? usbDeviceFound : null;
         }
 
         /// <summary>
@@ -205,8 +202,7 @@ namespace LibUsbDotNet
                 {
                     if (guid == devInterfaceGuid)
                     {
-                        usbDevice = usbRegistry.Device;
-                        if (usbDevice != null) return true;
+                        if (usbRegistry.Open(out usbDevice) && usbDevice != null) return true;
                     }
                 }
             }

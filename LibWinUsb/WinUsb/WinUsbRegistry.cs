@@ -172,6 +172,12 @@ namespace LibUsbDotNet.WinUsb
             }
         }
 
+        /// <inheritdoc />
+        public override UsbDevice.DriverModeType DeviceDriverMode
+        {
+            get { return UsbDevice.DriverModeType.WinUsb; }
+        }
+
         /// <summary>
         /// Check this value to determine if the usb device is still connected to the bus and ready to open.
         /// </summary>
@@ -196,24 +202,6 @@ namespace LibUsbDotNet.WinUsb
                 return false;
             }
         }
-
-        /// <summary>
-        /// Opens the USB device for communucation.
-        /// </summary>
-        /// <returns>Return a new instance of the <see cref="UsbDevice"/> class.
-        /// If the device fails to open a null refrence is return. For extended error
-        /// information use the <see cref="UsbDevice.UsbErrorEvent"/>.
-        ///  </returns>
-        public override UsbDevice Device
-        {
-            get
-            {
-                WinUsbDevice winUsbDevice;
-                Open(out winUsbDevice);
-                return winUsbDevice;
-            }
-        }
-
 
         private void parseDeviceID()
         {

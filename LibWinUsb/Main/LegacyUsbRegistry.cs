@@ -46,23 +46,6 @@ namespace LibUsbDotNet.Main
         }
 
         /// <summary>
-        /// Opens the USB device for communucation.
-        /// </summary>
-        /// <returns>Return a new instance of the <see cref="UsbDevice"/> class.
-        /// If the device fails to open a null refrence is return. For extended error
-        /// information use the <see cref="UsbDevice.UsbErrorEvent"/>.
-        ///  </returns>
-        public override UsbDevice Device
-        {
-            get
-            {
-                UsbDevice libUsbDevice;
-                Open(out libUsbDevice);
-                return libUsbDevice;
-            }
-        }
-
-        /// <summary>
         /// Gets the DeviceInterfaceGuids for the WinUsb device.
         /// </summary>
         public override Guid[] DeviceInterfaceGuids
@@ -86,6 +69,12 @@ namespace LibUsbDotNet.Main
                 }
                 return mDeviceInterfaceGuids;
             }
+        }
+
+        /// <inheritdoc />
+        public override UsbDevice.DriverModeType DeviceDriverMode
+        {
+            get { return UsbDevice.DriverModeType.LibUsb; }
         }
 
         /// <summary>
