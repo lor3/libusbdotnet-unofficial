@@ -390,17 +390,14 @@ namespace LibUsbDotNet.Main
 
         private void DisposeAndRemoveFromList()
         {
-            if (!mIsDisposed)
+            UsbEndpointReader epReader = this as UsbEndpointReader;
+            if (!ReferenceEquals(epReader, null))
             {
-                UsbEndpointReader epReader = this as UsbEndpointReader;
-                if (!ReferenceEquals(epReader, null))
-                {
-                    if (epReader.DataReceivedEnabled) epReader.DataReceivedEnabled = false;
-                }
-                Abort();
-                mUsbDevice.ActiveEndpoints.RemoveFromList(this);
+                if (epReader.DataReceivedEnabled) epReader.DataReceivedEnabled = false;
             }
-            mIsDisposed = true;
+
+            Abort();
+            mUsbDevice.ActiveEndpoints.RemoveFromList(this);
         }
 
         private int ReadPipe(IntPtr pBuffer, int bufferLength, out int lengthTransferred, int isoPacketSize, IntPtr pOverlapped)
