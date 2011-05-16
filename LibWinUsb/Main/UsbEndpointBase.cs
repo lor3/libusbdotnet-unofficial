@@ -159,8 +159,8 @@ namespace LibUsbDotNet.Main
             if (mIsDisposed || !disposing)
                 return;
 
-            mIsDisposed = true;
             DisposeAndRemoveFromList();
+            mIsDisposed = true;
         }
 
         /// <summary>
